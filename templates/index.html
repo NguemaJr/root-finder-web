@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Root Finder Web App</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background-color: #f4f4f4; }
+        input, select { padding: 5px; margin: 5px 0; width: 100%; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        h2 { margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔍 Root Finder</h1>
+    <form method="POST">
+        <label>Function (in terms of x):</label>
+        <input type="text" name="function" required>
+
+        <label>Select Method:</label>
+        <select name="method" required onchange="toggleInputs(this.value)">
+            <option value="bisection">Bisection</option>
+            <option value="false_position">False Position</option>
+            <option value="newton_raphson">Newton-Raphson</option>
+            <option value="secant">Secant</option>
+        </select>
+
+        <div id="input-ab">
+            <label>Lower Bound (a):</label>
+            <input type="number" step="any" name="a">
+            <label>Upper Bound (b):</label>
+            <input type="number" step="any" name="b">
+        </div>
+
+        <div id="input-x0" style="display:none;">
+            <label>Initial Guess (x0):</label>
+            <input type="number" step="any" name="x0">
+        </div>
+
+        <div id="input-x0x1" style="display:none;">
+            <label>First Guess (x0):</label>
+            <input type="number" step="any" name="x0">
+            <label>Second Guess (x1):</label>
+            <input type="number" step="any" name="x1">
+        </div>
+
+        <label>Decimal Places:</label>
+        <input type="number" name="decimal_places" required>
+
+        <label>Max Iterations:</label>
+        <input type="number" name="max_iter" required>
+
+        <input type="submit" value="Find Root">
+    </form>
+
+    {% if result is not none %}
+        <h2>{{ method }}</h2>
+        <p><strong>Root:</strong> {{ result }}</p>
+
+        {% if table %}
+        <table>
+            <thead>
+            <tr>
+                {% for header in table[0] %}
+                    <th>Col {{ loop.index }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in table %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <img src="{{ url_for('static', filename='root_plot.png') }}" width="100%">
+        {% endif %}
+    {% endif %}
+</div>
+
+<script>
+function toggleInputs(method) {
+    document.getElementById('input-ab').style.display = (method === 'bisection' || method === 'false_position') ? 'block' : 'none';
+    document.getElementById('input-x0').style.display = (method === 'newton_raphson') ? 'block' : 'none';
+    document.getElementById('input-x0x1').style.display = (method === 'secant') ? 'block' : 'none';
+}
+</script>
+</body>
+</html>

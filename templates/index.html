@@ -3,12 +3,62 @@
 <head>
     <title>Root Finder Web App</title>
     <style>
-        body { font-family: Arial; padding: 20px; background-color: #f4f4f4; }
-        input, select { padding: 5px; margin: 5px 0; width: 100%; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-        h2 { margin-top: 30px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eaf4fc;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 720px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #006699;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0 16px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #006699;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #00557a;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #006699;
+            color: white;
+        }
+        img {
+            margin-top: 20px;
+            border-radius: 5px;
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -55,29 +105,29 @@
     </form>
 
     {% if result is not none %}
-        <h2>{{ method }}</h2>
+        <h2>{{ method | capitalize }} Method</h2>
         <p><strong>Root:</strong> {{ result }}</p>
 
         {% if table %}
         <table>
             <thead>
-            <tr>
-                {% for header in table[0] %}
-                    <th>Col {{ loop.index }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for row in table %}
                 <tr>
-                    {% for cell in row %}
-                        <td>{{ cell }}</td>
+                    {% for header in table[0] %}
+                        <th>Col {{ loop.index }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for row in table %}
+                    <tr>
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
-        <img src="{{ url_for('static', filename='root_plot.png') }}" width="100%">
+        <img src="{{ url_for('static', filename='root_plot.png') }}" alt="Root Plot">
         {% endif %}
     {% endif %}
 </div>
